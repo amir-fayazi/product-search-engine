@@ -10,7 +10,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Serach.Infrastructure.Repositories
 {
-    public class ProductRepository 
+    public class ProductRepository : IProductRepository
     {
         private readonly AppDbContext _context;
         

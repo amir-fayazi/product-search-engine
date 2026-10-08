@@ -1,10 +1,11 @@
-﻿using Search.Domain.ProductAgg.Enums;
+﻿using Search.Domain.ProductAgg.Dtos;
+using Search.Domain.ProductAgg.Enums;
 using System.Text.RegularExpressions;
 
 namespace Search.Domain.ProductAgg.Contracts
 {
     public interface IProductRepository
     {
-        ICollection<Product> SearchProducts(ProductSearchFilter filters, ProductSortField productSortField, SortDirectionEnum sortDirection);
+        ICollection<ProductResultDto> SearchProducts(ProductSearchFilter filters);
     }
 }
