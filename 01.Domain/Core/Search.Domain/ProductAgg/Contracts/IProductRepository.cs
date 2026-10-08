@@ -1,6 +1,4 @@
-﻿
-
-using Search.Domain.ProductAgg.Enums;
+﻿using Search.Domain.ProductAgg.Enums;
 using System.Text.RegularExpressions;
 
 namespace Search.Domain.ProductAgg.Contracts

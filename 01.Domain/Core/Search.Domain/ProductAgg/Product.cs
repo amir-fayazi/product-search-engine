@@ -11,6 +11,7 @@ namespace Search.Domain.ProductAgg
         public string Color { get; private set; } = null!;
         public string Brand { get; private set; } = null!;
         public int Stock { get; private set; }
+      
 
         public int CategoryId { get; private set; }
         public Category Category { get; private set; } = null!;
@@ -66,6 +67,7 @@ namespace Search.Domain.ProductAgg
             ArgumentNullException.ThrowIfNull(category);
             Category = category;
         }
+
 
 
         private static string ValidateText(string value, string parameterName, int maxLength)

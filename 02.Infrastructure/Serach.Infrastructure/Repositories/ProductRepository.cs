@@ -3,26 +3,69 @@
 using Microsoft.EntityFrameworkCore;
 using Search.Domain.ProductAgg;
 using Search.Domain.ProductAgg.Contracts;
+using Search.Domain.ProductAgg.Dtos;
 using Search.Domain.ProductAgg.Enums;
 using Serach.Infrastructure.Persistence;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Serach.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository 
     {
         private readonly AppDbContext _context;
+        
         public ProductRepository(AppDbContext context)
         {
             _context = context;
         }
 
-
-        public void SearchProducts(ProductSearchFilter filters, ProductSortField productSortField, SortDirectionEnum sortDirection)
+        public ICollection<ProductResultDto> SearchProducts(ProductSearchFilter filters)
         {
             IQueryable<Product> query = _context.Products.AsNoTracking();
 
+            query = ApplyFiltering(query, filters);
 
+            query = ApplySorting(query, filters.SortBy, filters.SortDirection);
+
+            return [.. query.Select(x => new ProductResultDto
+            {
+                Title = x.Title,
+                CategoryName = x.Category.Name.Value,
+                Brand = x.Brand,
+                Color = x.Color,
+                Price = x.Price,
+                Stock = x.Stock,
+                IsAvailable = x.Stock > 0
+            })];
+        }
+
+        private static IQueryable<Product> ApplySorting(
+            IQueryable<Product> query,
+            ProductSortField field,
+            SortDirectionEnum direction)
+        {
+            bool descending = direction == SortDirectionEnum.Descending;
+
+            return field switch
+            {
+                ProductSortField.Title => descending
+                    ? query.OrderByDescending(x => x.Title)
+                    : query.OrderBy(x => x.Title),
+
+                ProductSortField.Price => descending
+                    ? query.OrderByDescending(x => x.Price)
+                    : query.OrderBy(x => x.Price),
+
+                ProductSortField.Stock => descending
+                    ? query.OrderByDescending(x => x.Stock)
+                    : query.OrderBy(x => x.Stock),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(field))
+            };
+        }
+
+        private static IQueryable<Product> ApplyFiltering(IQueryable<Product> query, ProductSearchFilter filters)
+        {
             if (!string.IsNullOrWhiteSpace(filters.CategoryName))
                 query = query.Where(x => x.Category.Name.Value == filters.CategoryName);
 
@@ -44,75 +87,10 @@ namespace Serach.Infrastructure.Repositories
             if (filters.MinStock.HasValue)
                 query = query.Where(x => x.Stock >= filters.MinStock.Value);
 
-            query = SortDirection(query, productSortField, sortDirection);
-
-
-             GetResultSearch(query);
-                        
-        }
-
-        public IQueryable<Product> SortDirection(IQueryable<Product> query, ProductSortField productSortField, SortDirectionEnum sortDirection)
-        {
-            if (sortDirection == SortDirectionEnum.Ascending)
-            {
-                switch (productSortField)
-                {
-                    case ProductSortField.Title:
-                        query = query.OrderBy(x => x.Title);
-                        break;
-                    case ProductSortField.Price:
-                        query = query.OrderBy(x => x.Price);
-
-                        break;
-                    case ProductSortField.Stock:
-                        query = query.OrderBy(x => x.Stock);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else if (sortDirection == SortDirectionEnum.Descending)
-            {
-                switch (productSortField)
-                {
-                    case ProductSortField.Title:
-                        query = query.OrderByDescending(x => x.Title);
-                        break;
-                    case ProductSortField.Price:
-                        query = query.OrderByDescending(x => x.Price);
-                        break;
-                    case ProductSortField.Stock:
-                        query = query.OrderByDescending(x => x.Stock);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
             return query;
-
         }
 
-        public List<ResultSearchDto> GetResultSearch(IQueryable<Product> query)
-        {
-            var pageNumber = 0;
-            var pageSize = 5;
 
-            return query.Select(x => new ResultSearchDto
-            {
-                Title = x.Title,
-                CategoryName = x.Category.Name.Value,
-                Price = x.Price,
-                Brand = x.Brand,
-                color = x.Color,
-                Stock = x.Stock
-            })
-              .Skip((pageNumber - 1) * pageSize)
-              .Take(pageSize)
-              .ToList();
-               
-        } 
-        
     }
-   
+
 }

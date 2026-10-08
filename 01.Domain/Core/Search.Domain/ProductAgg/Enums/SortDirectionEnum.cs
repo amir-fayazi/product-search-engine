@@ -1,4 +1,5 @@
 ﻿
+
 namespace Search.Domain.ProductAgg.Enums
 {
     public enum SortDirectionEnum
