@@ -4,7 +4,9 @@
   <Folder Name="/Src/01.Domain/Core/">
     <Project Path="01.Domain/Core/Search.Domain/Search.Domain.csproj" />
   </Folder>
-  <Folder Name="/Src/02.Infrastructure/" />
+  <Folder Name="/Src/02.Infrastructure/">
+    <Project Path="02.Infrastructure/Serach.Infrastructure/Serach.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/Src/03.Application/" />
   <Folder Name="/Src/04.Presentation/">
     <Project Path="04.Presentation/Search.Presentation/Search.Presentation.csproj" />
