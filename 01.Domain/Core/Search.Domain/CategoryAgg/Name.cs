@@ -4,22 +4,21 @@ namespace Search.Domain.CategoryAgg
 {
     public class Name
     {
-        public string Value { get; }
+        public string Value { get; } = null!;
 
-        private Name()
-        {
-            
-        }
+        private Name() { }
 
         public Name(string value)
         {
             if (string.IsNullOrWhiteSpace(value))
-                throw new ArgumentException("Name is required.");
+                throw new ArgumentException("Category name cannot be empty or whitespace.", nameof(value));
 
-            if(value.Length > 50)
-                throw new ArgumentException("Name could not bigger than 50 chars.");
+            string trimmedValue = value.Trim();
 
-            Value = value;
+            if (trimmedValue.Length > 50)
+                throw new ArgumentException("Category name cannot exceed 50 characters.", nameof(value));
+
+            Value = trimmedValue;
         }
 
         public override string ToString() => Value;

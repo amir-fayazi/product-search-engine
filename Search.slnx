@@ -6,5 +6,7 @@
   </Folder>
   <Folder Name="/Src/02.Infrastructure/" />
   <Folder Name="/Src/03.Application/" />
-  <Folder Name="/Src/04.Presentation/" />
+  <Folder Name="/Src/04.Presentation/">
+    <Project Path="04.Presentation/Search.Presentation/Search.Presentation.csproj" />
+  </Folder>
 </Solution>
