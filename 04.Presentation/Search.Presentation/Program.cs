@@ -1,5 +1,6 @@
 ﻿using Search.Domain.CategoryAgg;
 using Search.Domain.ProductAgg;
+using Search.Domain.ProductAgg.Enums;
 
 
 
@@ -13,4 +14,5 @@ var cat = new Category(new Name("amir"));
 cat.Name = null;
 
 //Console.WriteLine(mouse.Category.Name);
-Console.ReadKey();    
+Console.ReadKey();
+

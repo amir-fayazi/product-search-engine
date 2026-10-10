@@ -18,8 +18,8 @@ namespace Search.Domain.ProductAgg.Dtos
         public ICollection<string>? Colors { get; set; }
         public int? MinStock { get; set; }
 
-        // اینا رو چرا آورده؟؟
-        public ProductSortField SortBy { get; set; } = ProductSortField.Title;
+        
+        public SortField SortBy { get; set; } = SortField.Title;
         public SortDirectionEnum SortDirection { get; set; } = SortDirectionEnum.Ascending;
 
         //public ProductSortField? ThenSortBy { get; set; }

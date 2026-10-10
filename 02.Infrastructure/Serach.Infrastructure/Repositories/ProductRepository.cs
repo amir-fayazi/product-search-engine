@@ -27,6 +27,8 @@ namespace Serach.Infrastructure.Repositories
 
             query = ApplySorting(query, filters.SortBy, filters.SortDirection);
 
+            query = ApplyPagination(query, filters.PageSize, filters.PageNumber);
+
             return [.. query.Select(x => new ProductResultDto
             {
                 Title = x.Title,
@@ -39,32 +41,9 @@ namespace Serach.Infrastructure.Repositories
             })];
         }
 
-        private static IQueryable<Product> ApplySorting(
-            IQueryable<Product> query,
-            ProductSortField field,
-            SortDirectionEnum direction)
-        {
-            bool descending = direction == SortDirectionEnum.Descending;
-
-            return field switch
-            {
-                ProductSortField.Title => descending
-                    ? query.OrderByDescending(x => x.Title)
-                    : query.OrderBy(x => x.Title),
-
-                ProductSortField.Price => descending
-                    ? query.OrderByDescending(x => x.Price)
-                    : query.OrderBy(x => x.Price),
-
-                ProductSortField.Stock => descending
-                    ? query.OrderByDescending(x => x.Stock)
-                    : query.OrderBy(x => x.Stock),
-
-                _ => throw new ArgumentOutOfRangeException(nameof(field))
-            };
-        }
 
         private static IQueryable<Product> ApplyFiltering(IQueryable<Product> query, ProductSearchFilter filters)
+
         {
             if (!string.IsNullOrWhiteSpace(filters.CategoryName))
                 query = query.Where(x => x.Category.Name.Value == filters.CategoryName);
@@ -90,7 +69,37 @@ namespace Serach.Infrastructure.Repositories
             return query;
         }
 
+        private static IQueryable<Product> ApplySorting(
+            IQueryable<Product> query,
+            SortField field,
+            SortDirectionEnum direction)
+        {
+            bool descending = direction == SortDirectionEnum.Descending;
 
+            return field switch
+            {
+                SortField.Title => descending
+                    ? query.OrderByDescending(x => x.Title)
+                    : query.OrderBy(x => x.Title),
+
+                SortField.Price => descending
+                    ? query.OrderByDescending(x => x.Price)
+                    : query.OrderBy(x => x.Price),
+
+                SortField.Stock => descending
+                    ? query.OrderByDescending(x => x.Stock)
+                    : query.OrderBy(x => x.Stock),
+
+                _ => throw new ArgumentOutOfRangeException(nameof(field))
+            };
+        }
+
+        private static IQueryable<Product> ApplyPagination(IQueryable<Product> query, int pageSize, int pageNumber)
+        {
+           return query
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize);
+        }
     }
 
 }

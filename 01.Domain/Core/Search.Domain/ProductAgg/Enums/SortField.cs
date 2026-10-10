@@ -2,7 +2,7 @@
 
 namespace Search.Domain.ProductAgg.Enums
 {
-    public enum ProductSortField
+    public enum SortField
     {
         Title = 1,
         Price =2,
