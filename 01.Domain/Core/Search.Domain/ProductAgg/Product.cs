@@ -5,7 +5,7 @@ namespace Search.Domain.ProductAgg
 {
     public class Product 
     {
-        public int Id { get; private set; }
+        public int Id { get;  set; }
         public string Title { get; private set; } = null!;
         public decimal Price { get; private set; }
         public string Color { get; private set; } = null!;

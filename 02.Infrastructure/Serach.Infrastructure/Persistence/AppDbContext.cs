@@ -14,6 +14,8 @@ namespace Serach.Infrastructure.Persistence
         {
             optionsBuilder.UseSqlServer(
                 @"Server=.;Database=Week15SearchProduct;Integrated Security=True;TrustServerCertificate=True;");
+
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

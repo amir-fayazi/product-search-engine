@@ -8,7 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\01.Domain\Core\Search.Domain\Search.Domain.csproj" />
+    <ProjectReference Include="..\..\02.Infrastructure\Serach.Infrastructure\Serach.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\03.Application\Search.Application\Search.Application.csproj" />
   </ItemGroup>
 
 </Project>
