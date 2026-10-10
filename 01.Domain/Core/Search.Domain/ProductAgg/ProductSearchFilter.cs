@@ -18,7 +18,7 @@ namespace Search.Domain.ProductAgg.Dtos
         public ICollection<string>? Colors { get; set; }
         public int? MinStock { get; set; }
 
-        
+
         public SortField SortBy { get; set; } = SortField.Title;
         public SortDirectionEnum SortDirection { get; set; } = SortDirectionEnum.Ascending;
 
